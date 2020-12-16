@@ -5,10 +5,8 @@ const path = require("path");
 const http = require("http");
 
 function writeToDB(notes){
-    // Converts new JSON Array back to string
     notes = JSON.stringify(notes);
     console.log (notes);
-    // Writes String back to db.json
     fs.writeFileSync("./db/db.json", notes, function(err){
         if (err) {
             return console.log(err);
@@ -52,26 +50,19 @@ app.post("/api/notes", (req, res) => {
     } 
     console.log("req.body.id: " + req.body.id);
     notesData.push(req.body);
- 
     writeToDB(notesData);
     console.log(notesData);
-
     res.json(req.body);
 });
 
-app.delete("/api/notes/:id", (req, res) => {
-        
+app.delete("/api/notes/:id", (req, res) => {    
     let id = req.params.id.toString();
     console.log(id);
-
     for (i=0; i < notesData.length; i++){
        
         if (notesData[i].id == id){
             console.log("match!");
-            // responds with deleted note
             res.send(notesData[i]);
-
-            // Removes the deleted note
             notesData.splice(i,1);
             break;
         }
